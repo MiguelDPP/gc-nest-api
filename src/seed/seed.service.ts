@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { LocationService } from 'src/location/location.service';
 import { seedData } from './data/seed.data';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class SeedService {
-  constructor(private readonly locationService: LocationService) {}
+  constructor(
+    private readonly locationService: LocationService,
+    private readonly usersService: UsersService,
+  ) {}
 
   async runSeed() {
     await this.clearDatabase();
@@ -13,8 +17,10 @@ export class SeedService {
   }
 
   async clearDatabase() {
+    await this.usersService.deleteAllUsers();
     await this.locationService.deleteAllMunicipalities();
     await this.locationService.deleteAllDepartments();
+    await this.usersService.deleteAllRoles();
   }
 
   async createLocations() {
@@ -23,5 +29,7 @@ export class SeedService {
     await this.locationService.createMunicipalitiesBulk(
       seedData.municipalities,
     );
+    await this.usersService.createForSeedRoles(seedData.roles);
+    return await this.usersService.createForSeedUsers(seedData.users);
   }
 }

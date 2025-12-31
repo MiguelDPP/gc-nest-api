@@ -1,0 +1,33 @@
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UsersRolesRelationship } from './users-roles-relationship.entity';
+
+@Entity({
+  name: 'roles',
+})
+export class Role {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column('text', {
+    // Accepted values: 'admin', 'user', 'manager', etc.
+    unique: true,
+  })
+  name: string;
+
+  @OneToMany(
+    () => UsersRolesRelationship,
+    (usersRolesRelationship) => usersRolesRelationship.role,
+    {
+      eager: true,
+    },
+  )
+  users: UsersRolesRelationship[];
+
+  @Column('timestamptz')
+  createdAt: Date;
+
+  @Column('timestamptz', {
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
+}
