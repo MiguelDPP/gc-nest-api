@@ -29,16 +29,15 @@ export class Municipality {
     () => Department,
     (department) => department.id,
     {
-      eager: true,
       onDelete: 'CASCADE',
       // cascade: true, // Permite guardar el departamento relacionado al guardar una municipalidad
     }, // Cargar siempre la relación
   )
   department: Department;
 
-  @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP' })
+  @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP', select: false })
   createdAt: Date;
 
-  @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP' })
+  @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP', select: false })
   updatedAt: Date;
 }

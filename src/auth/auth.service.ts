@@ -5,14 +5,12 @@ import { User } from 'src/users/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './interfaces';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private readonly userService: UsersService,
     // private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
@@ -23,7 +21,7 @@ export class AuthService {
 
     if (isEmail(username)) key = 'email';
 
-    const user = await this.findByUsername(key, username);
+    const user = await this.userService.findByUsername(key, username);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -36,39 +34,17 @@ export class AuthService {
     const token = this.getJwtToken({ id: user.id });
 
     return {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      token,
+      // id: user.id,
+      message: 'User Logged successfully',
+      // username: user.username,
+      // email: user.email,
+      access_token: token,
+      token_type: 'Bearer',
     };
   }
 
   getJwtToken(payload: JwtPayload) {
     const token = this.jwtService.sign(payload);
     return token;
-  }
-
-  async findByUsername(index: string, value: string): Promise<User | null> {
-    const user = await this.userRepository.findOne({
-      where: { [index]: value },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        password: true,
-      },
-      // Seleccionar todos las columnas
-      relations: { roles: { role: true }, municipality: true },
-    });
-
-    return user;
-  }
-
-  async findFullWithId(id: string): Promise<User | null> {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      relations: { roles: { role: true }, municipality: true },
-    });
-    return user;
   }
 }

@@ -8,6 +8,17 @@ export const UsersData: SeedUser[] = [
     email: 'mdportillo08@gmail.com',
     password: 'Migueldp08#',
     municipalityId: 431,
-    rolesId: ['Admin', 'User'],
+    rolesId: ['admin', 'user'],
+  },
+  {
+    firstName: 'Angie',
+    secondName: 'Lorena',
+    surname: 'Castro',
+    secondSurname: 'Montoya',
+    username: 'angielcastro',
+    email: 'angie@gmail.com',
+    password: 'Migueldp08#',
+    municipalityId: 431,
+    rolesId: ['user'],
   },
 ];

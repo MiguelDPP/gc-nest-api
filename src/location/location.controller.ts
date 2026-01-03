@@ -1,7 +1,24 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { LocationService } from './location.service';
 
-@Controller('location')
+@Controller()
 export class LocationController {
   constructor(private readonly locationService: LocationService) {}
+
+  @Get('departments')
+  getDepartments() {
+    return this.locationService.getDepartments();
+  }
+
+  @Get('municipalities')
+  getMunicipalities() {
+    return this.locationService.getAllMunicipalities();
+  }
+
+  @Get('municipalities/:deparmentId')
+  getMunicipalitiesByDepartmentId(
+    @Param('deparmentId', ParseIntPipe) departmentId: number,
+  ) {
+    return this.locationService.getMunicipalitiesByDeparmentId(departmentId);
+  }
 }

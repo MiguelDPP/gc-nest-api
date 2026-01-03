@@ -2,9 +2,9 @@ import { SeedRoles } from '../interfaces';
 
 export const RolesData: SeedRoles[] = [
   {
-    name: 'Admin',
+    name: 'admin',
   },
   {
-    name: 'User',
+    name: 'user',
   },
 ];

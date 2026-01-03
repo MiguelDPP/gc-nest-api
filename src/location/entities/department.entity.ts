@@ -28,12 +28,13 @@ export class Department {
 
   @OneToMany(() => Municipality, (municipality) => municipality.department, {
     cascade: true,
+    eager: true,
   })
   municipalities?: Municipality[];
 
-  @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP' })
+  @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP', select: false })
   createdAt: Date;
 
-  @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP' })
+  @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP', select: false })
   updatedAt: Date;
 }

@@ -7,11 +7,12 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UsersRolesRelationship } from './users-roles-relationship.entity';
+import { BaseEntity } from 'src/common/entities/base.entity';
 
 @Entity({
   name: 'users',
 })
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -81,11 +82,14 @@ export class User {
   )
   roles: UsersRolesRelationship[];
 
-  @Column('timestamptz')
-  createdAt: Date;
+  // @Column('timestamptz', {
+  //   select: false,
+  // })
+  // createdAt: Date;
 
-  @Column('timestamptz', {
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
+  // @Column('timestamptz', {
+  //   default: () => 'CURRENT_TIMESTAMP',
+  //   select: false,
+  // })
+  // updatedAt: Date;
 }

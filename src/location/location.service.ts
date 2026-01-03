@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Department } from './entities/department.entity';
@@ -56,5 +56,29 @@ export class LocationService {
       });
     });
     return this.munipalityRepository.save(newMunicipalities);
+  }
+
+  async getDepartments() {
+    const departments = await this.departmentRepository.find();
+    return {
+      deparment: departments, // TODO: Cambiar
+    };
+  }
+
+  async getAllMunicipalities() {
+    return await this.munipalityRepository.find();
+  }
+
+  async getMunicipalitiesByDeparmentId(departmentId: number) {
+    const department = await this.departmentRepository.findOneBy({
+      id: departmentId,
+    });
+
+    if (!department)
+      throw new NotFoundException(
+        'Municipalities with deparment selected not found',
+      );
+
+    return { municipality: department.municipalities }; // TODO: Cambiar
   }
 }

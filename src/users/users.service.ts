@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Role } from './entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,6 +7,11 @@ import { SeedUser } from 'src/seed/interfaces';
 import { Municipality } from 'src/location/entities/municipality.entity';
 import { UsersRolesRelationship } from './entities/users-roles-relationship.entity';
 import * as bcrypt from 'bcrypt';
+import { UserResponseDto } from './dto/user-response.dto';
+import { plainToInstance } from 'class-transformer';
+import { UserPaginationDto } from './dto/user-pagination.dto';
+import { PaginationResponseDto } from 'src/common/dto/pagination-response.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -66,24 +71,130 @@ export class UsersService {
     await queryBuilderUser.delete().where({}).execute();
   }
 
-  // Metodos generados
-  // create(createUserDto: CreateUserDto) {
-  //   return 'This action adds a new user';
-  // }
+  getCurrentUser(user: User): UserResponseDto {
+    return this.toUserResponse(user);
+  }
 
-  // findAll() {
-  //   return `This action returns all users`;
-  // }
+  private toUserResponse(user: User): UserResponseDto {
+    const userDto = plainToInstance(UserResponseDto, user, {
+      excludeExtraneousValues: true,
+    });
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} user`;
-  // }
+    if (user.roles) userDto.roles = user.roles.map((rol) => rol.role.name);
+    if (user.municipality) userDto.municipality = user.municipality;
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
+    return userDto;
+  }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
+  async findById(userId: string): Promise<UserResponseDto> {
+    const user = await this.findFullWithId(userId);
+
+    if (!user) throw new NotFoundException(`User with id ${userId} not found`);
+
+    return this.toUserResponse(user);
+  }
+
+  async findFullWithId(id: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: { roles: { role: true }, municipality: true },
+    });
+    return user;
+  }
+
+  async findByUsername(index: string, value: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({
+      where: { [index]: value },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        password: true,
+      },
+      // Seleccionar todos las columnas
+      relations: { roles: { role: true }, municipality: true },
+    });
+
+    return user;
+  }
+
+  async findAll(
+    userPagiationDto: UserPaginationDto,
+  ): Promise<PaginationResponseDto<UserResponseDto>> {
+    const { limit = 10, offset = 0, rol: rolName = 'all' } = userPagiationDto;
+
+    // const users = await this.userRepository.find({
+    //   take: limit,
+    //   skip: offset,
+    //   relations: { roles: { role: true } },
+    //   // where: {
+    //   //   roles: {
+    //   //     role: {
+    //   //       name: 'Admin',
+    //   //     },
+    //   //   },
+    //   // },
+    // });
+
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('user')
+      .distinct(true)
+      .leftJoinAndSelect('user.municipality', 'um')
+      .leftJoinAndSelect('user.roles', 'ur')
+      .leftJoinAndSelect('ur.role', 'role')
+      .take(limit)
+      .skip(offset);
+    // .where('role.name = :rol', { rol })
+    // .getMany();
+
+    if (rolName !== 'all') {
+      queryBuilder
+        .innerJoin('user.roles', 'urFilter')
+        .innerJoin('urFilter.role', 'roleFilter')
+        .where('roleFilter.name = :rolName', { rolName });
+    }
+
+    const [users, total] = await queryBuilder.getManyAndCount();
+
+    const page = Math.floor(offset / limit) + 1;
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      total,
+      page,
+      totalPages,
+      data: users.map((user) => this.toUserResponse(user)),
+    };
+    // return users.map((user) => this.toUserResponse(user));
+  }
+
+  async updateUser(updateUserDto: UpdateUserDto, user: User) {
+    const userToUpdate = (await this.userRepository.preload({
+      // id: user.id,
+      ...user,
+      ...updateUserDto,
+    })) as User;
+
+    if (updateUserDto?.municipalityId) {
+      const municipality = await this.municipalityRepository.findOneBy({
+        id: updateUserDto?.municipalityId,
+      });
+
+      if (municipality) {
+        user.municipality = municipality;
+      }
+    }
+
+    userToUpdate.updatedAt = new Date();
+    await this.userRepository.save(userToUpdate);
+    return this.toUserResponse(userToUpdate);
+    // return userUpdated;
+  }
+
+  async disableUser(user: User) {
+    user.isActive = false;
+    await this.userRepository.save(user);
+
+    return this.toUserResponse(user);
+  }
 }

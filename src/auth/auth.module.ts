@@ -4,8 +4,8 @@ import { AuthController } from './auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { UsersModule } from 'src/users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   controllers: [AuthController],
@@ -30,8 +30,10 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     }),
 
     UsersModule,
+
+    // TypeOrmModule.forFeature([User]), // Buscar si esto se puede hacer
   ],
 
-  exports: [JwtModule],
+  exports: [JwtModule, PassportModule],
 })
 export class AuthModule {}
