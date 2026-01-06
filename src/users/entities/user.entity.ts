@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { UsersRolesRelationship } from './users-roles-relationship.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
+import { Score } from 'src/questions/entities/score.entity';
 
 @Entity({
   name: 'users',
@@ -76,11 +77,13 @@ export class User extends BaseEntity {
     () => UsersRolesRelationship,
     (usersRolesRelationship) => usersRolesRelationship.user,
     {
-      eager: true,
       cascade: true,
     },
   )
   roles: UsersRolesRelationship[];
+
+  @OneToMany(() => Score, (score) => score.user)
+  scores: Score[];
 
   // @Column('timestamptz', {
   //   select: false,

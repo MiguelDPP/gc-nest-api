@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { LabelsQuestionsRelationship } from './labels-questions-relationship.entity';
 
 @Entity({
   name: 'labels',
@@ -20,6 +21,12 @@ export class Label extends BaseEntity {
     nullable: true,
   })
   color: string;
+
+  @OneToMany(
+    () => LabelsQuestionsRelationship,
+    (labelsQuestionsRelationship) => labelsQuestionsRelationship.label,
+  )
+  questions: LabelsQuestionsRelationship[];
 
   // @Column('timestamptz', {
   //   select: false,

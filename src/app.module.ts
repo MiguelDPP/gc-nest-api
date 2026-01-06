@@ -7,6 +7,7 @@ import { SeedModule } from './seed/seed.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { QuestionsModule } from './questions/questions.module';
+import { ErrorsModule } from './errors/errors.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { QuestionsModule } from './questions/questions.module';
     AuthModule,
     UsersModule,
     QuestionsModule,
+    ErrorsModule,
   ],
 })
 export class AppModule {}

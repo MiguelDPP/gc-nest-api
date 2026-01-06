@@ -69,6 +69,19 @@ export class LocationService {
     return await this.munipalityRepository.find();
   }
 
+  async findMunicipalityById(municipalityId: number) {
+    const municipality = await this.munipalityRepository.findOneBy({
+      id: municipalityId,
+    });
+
+    if (!municipality)
+      throw new NotFoundException(
+        `Municipality with id ${municipalityId} not found`,
+      );
+
+    return municipality;
+  }
+
   async getMunicipalitiesByDeparmentId(departmentId: number) {
     const department = await this.departmentRepository.findOneBy({
       id: departmentId,

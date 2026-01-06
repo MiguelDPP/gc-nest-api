@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
+import { AuthResponseDto } from './dto/auth-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
     // private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
-  async login(loginUserDto: LoginUserDto) {
+  async login(loginUserDto: LoginUserDto): Promise<AuthResponseDto> {
     const { username, password } = loginUserDto;
 
     let key: keyof User = 'username';
@@ -38,8 +39,8 @@ export class AuthService {
       message: 'User Logged successfully',
       // username: user.username,
       // email: user.email,
-      access_token: token,
-      token_type: 'Bearer',
+      accessToken: token,
+      tokenType: 'Bearer',
     };
   }
 

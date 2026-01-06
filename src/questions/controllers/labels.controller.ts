@@ -12,7 +12,7 @@ import {
 import { LabelsService } from '../services/labels.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { CreateLabelDto } from '../dto/labels/create-label.dto';
-import { ValidRoles } from 'src/enum/valid-roles';
+import { ValidRoles } from 'src/common/enum/valid-roles';
 import { UpdateLabelDto } from '../dto/labels/update-label.dto';
 import { LabelPaginationDto } from '../dto/labels/label-pagination.dto';
 

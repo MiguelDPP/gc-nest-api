@@ -10,6 +10,8 @@ import { User } from 'src/users/entities/user.entity';
 import { Municipality } from 'src/location/entities/municipality.entity';
 import { Answer } from './answer.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
+import { FunFacts } from './fun-facts.entity';
+import { LabelsQuestionsRelationship } from './labels-questions-relationship.entity';
 
 @Entity('questions')
 export class Question extends BaseEntity {
@@ -46,10 +48,11 @@ export class Question extends BaseEntity {
   isValidated: boolean;
 
   @Column('int')
-  point: number;
+  points: number;
 
   @ManyToOne(() => Municipality, (municipality) => municipality.id, {
     eager: true,
+    nullable: true,
   })
   municipality: Municipality;
 
@@ -57,6 +60,20 @@ export class Question extends BaseEntity {
     eager: true,
   })
   answers: Answer[];
+
+  @OneToMany(() => FunFacts, (funFacts) => funFacts.question, {
+    eager: true,
+  })
+  funFacts: FunFacts[];
+
+  @OneToMany(
+    () => LabelsQuestionsRelationship,
+    (labelsQuestionsRelationship) => labelsQuestionsRelationship.question,
+    {
+      eager: true,
+    },
+  )
+  labels: LabelsQuestionsRelationship[];
 
   // @Column('timestamptz', {
   //   select: false,

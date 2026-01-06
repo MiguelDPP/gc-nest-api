@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Question } from './question.entity';
 
 @Entity({
   name: 'type_questions',
@@ -10,6 +11,11 @@ export class TypeQuestion extends BaseEntity {
 
   @Column('text')
   name: string;
+
+  @OneToMany(() => Question, (question) => question.typeQuestion, {
+    cascade: true,
+  })
+  questions: Question[];
 
   // @Column('timestamptz', {
   //   select: false,

@@ -8,10 +8,10 @@ import { Municipality } from 'src/location/entities/municipality.entity';
 import { UsersRolesRelationship } from './entities/users-roles-relationship.entity';
 import * as bcrypt from 'bcrypt';
 import { UserResponseDto } from './dto/user-response.dto';
-import { plainToInstance } from 'class-transformer';
 import { UserPaginationDto } from './dto/user-pagination.dto';
 import { PaginationResponseDto } from 'src/common/dto/pagination-response.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserMapper } from './mappers/user.mapper';
 
 @Injectable()
 export class UsersService {
@@ -72,26 +72,26 @@ export class UsersService {
   }
 
   getCurrentUser(user: User): UserResponseDto {
-    return this.toUserResponse(user);
+    return UserMapper.toResponse(user);
   }
 
-  private toUserResponse(user: User): UserResponseDto {
-    const userDto = plainToInstance(UserResponseDto, user, {
-      excludeExtraneousValues: true,
-    });
+  // private toUserResponse(user: User): UserResponseDto {
+  //   const userDto = plainToInstance(UserResponseDto, user, {
+  //     excludeExtraneousValues: true,
+  //   });
 
-    if (user.roles) userDto.roles = user.roles.map((rol) => rol.role.name);
-    if (user.municipality) userDto.municipality = user.municipality;
+  //   if (user.roles) userDto.roles = user.roles.map((rol) => rol.role.name);
+  //   if (user.municipality) userDto.municipality = user.municipality;
 
-    return userDto;
-  }
+  //   return userDto;
+  // }
 
   async findById(userId: string): Promise<UserResponseDto> {
     const user = await this.findFullWithId(userId);
 
     if (!user) throw new NotFoundException(`User with id ${userId} not found`);
 
-    return this.toUserResponse(user);
+    return UserMapper.toResponse(user);
   }
 
   async findFullWithId(id: string): Promise<User | null> {
@@ -163,7 +163,7 @@ export class UsersService {
       total,
       page,
       totalPages,
-      data: users.map((user) => this.toUserResponse(user)),
+      data: users.map((user) => UserMapper.toResponse(user)),
     };
     // return users.map((user) => this.toUserResponse(user));
   }
@@ -187,7 +187,7 @@ export class UsersService {
 
     userToUpdate.updatedAt = new Date();
     await this.userRepository.save(userToUpdate);
-    return this.toUserResponse(userToUpdate);
+    return UserMapper.toResponse(userToUpdate);
     // return userUpdated;
   }
 
@@ -195,6 +195,6 @@ export class UsersService {
     user.isActive = false;
     await this.userRepository.save(user);
 
-    return this.toUserResponse(user);
+    return UserMapper.toResponse(user);
   }
 }

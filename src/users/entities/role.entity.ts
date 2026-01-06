@@ -18,9 +18,6 @@ export class Role extends BaseEntity {
   @OneToMany(
     () => UsersRolesRelationship,
     (usersRolesRelationship) => usersRolesRelationship.role,
-    {
-      eager: true,
-    },
   )
   users: UsersRolesRelationship[];
 
