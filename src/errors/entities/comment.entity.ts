@@ -10,7 +10,9 @@ export class Comment extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Error, (error) => error.comments)
+  @ManyToOne(() => Error, (error) => error.comments, {
+    onDelete: 'CASCADE',
+  })
   error: Error;
 
   @ManyToOne(() => User, (user) => user.id, { eager: true })

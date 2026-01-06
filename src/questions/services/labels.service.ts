@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Label } from '../entities/label.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateLabelDto } from '../dto/labels/create-label.dto';
 import { LabelResponseDto } from '../dto/labels/label-response.dto';
 import { ramdomHexColor } from 'src/common/helpers/ramdom-hex-color';
@@ -96,5 +96,11 @@ export class LabelsService {
     const { affected } = await this.labelRespository.delete({ id: label.id });
 
     if (affected === 0) throw new BadRequestException('Error to delete label');
+  }
+
+  async findByIds(labelIds: string[]) {
+    return this.labelRespository.findBy({
+      id: In(labelIds),
+    });
   }
 }

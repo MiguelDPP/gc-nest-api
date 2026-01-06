@@ -2,6 +2,8 @@ import { plainToInstance } from 'class-transformer';
 import { QuestionResponseDto } from '../dto/questions/question-response.dto';
 import { Question } from '../entities/question.entity';
 import { UserMapper } from 'src/users/mappers/user.mapper';
+import { TypeQuestionMapper } from './type-question.mapper';
+import { AnswerMapper } from './answer.mapper';
 
 export class QuestionMapper {
   static toResponse(question: Question): QuestionResponseDto {
@@ -12,6 +14,18 @@ export class QuestionMapper {
     if (question.user) {
       questionDto.user = UserMapper.toResponse(question.user);
     }
+
+    if (question.municipality) {
+      questionDto.municipality = question.municipality;
+    }
+
+    questionDto.typeQuestion = TypeQuestionMapper.toResponse(
+      question.typeQuestion,
+    );
+
+    questionDto.answers = AnswerMapper.toResponseList(question.answers);
+
+    // if ()
 
     return questionDto;
   }

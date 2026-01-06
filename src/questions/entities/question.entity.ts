@@ -58,11 +58,13 @@ export class Question extends BaseEntity {
 
   @OneToMany(() => Answer, (answer) => answer.question, {
     eager: true,
+    cascade: true,
   })
   answers: Answer[];
 
   @OneToMany(() => FunFacts, (funFacts) => funFacts.question, {
     eager: true,
+    cascade: true,
   })
   funFacts: FunFacts[];
 
@@ -70,6 +72,7 @@ export class Question extends BaseEntity {
     () => LabelsQuestionsRelationship,
     (labelsQuestionsRelationship) => labelsQuestionsRelationship.question,
     {
+      cascade: true,
       eager: true,
     },
   )

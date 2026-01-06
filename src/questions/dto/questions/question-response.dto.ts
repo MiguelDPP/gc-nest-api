@@ -1,5 +1,7 @@
 import { Expose } from 'class-transformer';
 import { UserResponseDto } from 'src/users/dto/user-response.dto';
+import { TypeQuestionResponseDto } from '../type-questions/type-question-response.dto';
+import { AnswerResponseDto } from '../answers/asnwer-response.dto';
 
 export class QuestionResponseDto {
   @Expose()
@@ -9,14 +11,14 @@ export class QuestionResponseDto {
   @Expose()
   question: string;
   @Expose()
-  user?: UserResponseDto;
+  user: UserResponseDto;
   @Expose()
-  typeQuestion: {
-    id: string;
-    name: string;
-  };
+  typeQuestion: TypeQuestionResponseDto;
   @Expose()
   time: number;
+
+  @Expose()
+  answers: AnswerResponseDto[];
 
   @Expose()
   isValidated: boolean;

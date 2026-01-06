@@ -1,7 +1,6 @@
 import * as Joi from 'joi';
 
 export const EnvConfiguration = () => {
-  // TODO: Traducir variables
   return {
     stage: process.env.STAGE,
     db_password: process.env.DB_PASSWORD,

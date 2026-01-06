@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Question } from './question.entity';
+import { TypeQuestionsEnum } from '../enums/typeQuestions.enum';
 
 @Entity({
   name: 'type_questions',
@@ -10,7 +11,7 @@ export class TypeQuestion extends BaseEntity {
   id: string;
 
   @Column('text')
-  name: string;
+  name: TypeQuestionsEnum;
 
   @OneToMany(() => Question, (question) => question.typeQuestion, {
     cascade: true,

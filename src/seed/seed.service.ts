@@ -3,6 +3,8 @@ import { LocationService } from 'src/location/location.service';
 import { seedData } from './data/seed.data';
 import { UsersService } from 'src/users/users.service';
 import { TypeQuestionsService } from 'src/questions/services/type-questions.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class SeedService {
@@ -10,6 +12,9 @@ export class SeedService {
     private readonly locationService: LocationService,
     private readonly usersService: UsersService,
     private readonly typeQuestionsService: TypeQuestionsService,
+
+    @InjectRepository(Error)
+    private readonly errorsRepository: Repository<Error>,
   ) {}
 
   async runSeed() {
@@ -18,7 +23,13 @@ export class SeedService {
     await this.createLocations();
   }
 
+  private deleteAllErrors() {
+    const query = this.errorsRepository.createQueryBuilder('error');
+    return query.delete().where({}).execute();
+  }
+
   async clearDatabase() {
+    await this.deleteAllErrors();
     await this.usersService.deleteAllUsers();
     await this.locationService.deleteAllMunicipalities();
     await this.locationService.deleteAllDepartments();

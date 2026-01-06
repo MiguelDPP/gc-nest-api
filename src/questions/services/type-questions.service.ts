@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeQuestion } from '../entities/type-questions.entity';
 import { Repository } from 'typeorm';
@@ -24,7 +24,7 @@ export class TypeQuestionsService {
     const typeQuestion = await this.typeQuestionRepository.findOneBy({ id });
 
     if (!typeQuestion) {
-      throw new Error(`TypeQuestion with id ${id} not found`);
+      throw new NotFoundException(`TypeQuestion with id ${id} not found`);
     }
 
     return TypeQuestionMapper.toResponse(typeQuestion);

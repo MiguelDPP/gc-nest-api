@@ -16,9 +16,16 @@ export class CreateAnswerDto {
   @IsUUID()
   questionId: string;
 
-  @IsOptional()
   @IsBoolean()
   // @Type(() => Boolean)
-  @Transform(({ value }) => Boolean(value ?? true)) // Todo: probar esto
+  @Transform(({ value }: { value: unknown }) => {
+    if (value === 'true' || value === true) {
+      return true;
+    }
+    if (value === 'false' || value === false) {
+      return false;
+    }
+    return value;
+  }) // Todo: probar esto
   isCorrect: boolean;
 }

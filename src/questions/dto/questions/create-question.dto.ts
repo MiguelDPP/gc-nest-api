@@ -43,7 +43,6 @@ export class CreateQuestionDto {
   points: number;
 
   @IsArray()
-  @IsOptional()
   @ValidateNested({ each: true })
   @ArrayMinSize(2)
   @Type(() => CreateAnswerDto)
@@ -55,7 +54,7 @@ export class CreateQuestionDto {
   funFact?: string;
 
   @IsOptional() // Revisar si si o no
-  @IsArray({ each: true })
+  @IsArray()
   @IsUUID('all', { each: true })
   labels?: string[];
 }

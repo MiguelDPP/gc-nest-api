@@ -9,5 +9,7 @@ import { Comment } from './entities/comment.entity';
   imports: [TypeOrmModule.forFeature([Error, Comment])],
   controllers: [ErrorsController],
   providers: [ErrorsService],
+
+  exports: [TypeOrmModule],
 })
 export class ErrorsModule {}

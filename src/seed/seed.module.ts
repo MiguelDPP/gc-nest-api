@@ -4,10 +4,11 @@ import { SeedController } from './seed.controller';
 import { LocationModule } from 'src/location/location.module';
 import { UsersModule } from 'src/users/users.module';
 import { QuestionsModule } from 'src/questions/questions.module';
+import { ErrorsModule } from 'src/errors/errors.module';
 
 @Module({
   controllers: [SeedController],
   providers: [SeedService],
-  imports: [LocationModule, UsersModule, QuestionsModule],
+  imports: [LocationModule, UsersModule, QuestionsModule, ErrorsModule],
 })
 export class SeedModule {}

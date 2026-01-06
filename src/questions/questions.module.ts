@@ -15,6 +15,7 @@ import { FunFacts } from './entities/fun-facts.entity';
 import { LabelsQuestionsRelationship } from './entities/labels-questions-relationship.entity';
 import { Score } from './entities/score.entity';
 import { ScoreQuestions } from './entities/score-questions.entity';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ScoreQuestions } from './entities/score-questions.entity';
       ScoreQuestions,
     ]),
     LocationModule,
+    UsersModule,
   ],
   controllers: [QuestionsController, LabelsController, TypeQuestionsController],
   providers: [QuestionsService, LabelsService, TypeQuestionsService],

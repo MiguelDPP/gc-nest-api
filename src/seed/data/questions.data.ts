@@ -1,16 +1,11 @@
+import { TypeQuestionsEnum } from 'src/questions/enums/typeQuestions.enum';
 import { SeedTypeQuestion } from '../interfaces/seed-question.interface';
 
-export const TypeQuestionsData: SeedTypeQuestion[] = [
-  {
-    name: 'Seleccion Multiple',
-  },
-  {
-    name: 'Unica Respuesta',
-  },
-  {
-    name: 'Verdadero o Falso',
-  },
-  {
-    name: 'Selecccionar en el mapa',
-  },
-];
+const getTypeQuestionsData = (): SeedTypeQuestion[] => {
+  // Recorrer los valores del enum y crear un objeto para cada uno
+  return Object.values(TypeQuestionsEnum).map((typeName) => ({
+    name: typeName,
+  }));
+};
+
+export const TypeQuestionsData: SeedTypeQuestion[] = getTypeQuestionsData();

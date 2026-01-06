@@ -75,6 +75,10 @@ export class UsersService {
     return UserMapper.toResponse(user);
   }
 
+  isAdmin(user: User): boolean {
+    return user.roles.some(({ role }) => role.name === 'admin');
+  }
+
   // private toUserResponse(user: User): UserResponseDto {
   //   const userDto = plainToInstance(UserResponseDto, user, {
   //     excludeExtraneousValues: true,
