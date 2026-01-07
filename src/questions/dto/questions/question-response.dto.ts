@@ -2,6 +2,7 @@ import { Expose } from 'class-transformer';
 import { UserResponseDto } from 'src/users/dto/user-response.dto';
 import { TypeQuestionResponseDto } from '../type-questions/type-question-response.dto';
 import { AnswerResponseDto } from '../answers/asnwer-response.dto';
+import { LabelResponseDto } from '../labels/label-response.dto';
 
 export class QuestionResponseDto {
   @Expose()
@@ -29,4 +30,7 @@ export class QuestionResponseDto {
     id: number;
     name: string;
   };
+
+  @Expose()
+  labels: LabelResponseDto[];
 }

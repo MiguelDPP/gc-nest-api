@@ -19,6 +19,14 @@ export class QuestionMapper {
       questionDto.municipality = question.municipality;
     }
 
+    if (question.labels) {
+      questionDto.labels = question.labels.map((label) => ({
+        id: label.label.id,
+        name: label.label.name,
+        color: label.label.color,
+      }));
+    }
+
     questionDto.typeQuestion = TypeQuestionMapper.toResponse(
       question.typeQuestion,
     );

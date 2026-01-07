@@ -1,6 +1,7 @@
-import { BaseEntity, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Question } from './question.entity';
 import { Label } from './label.entity';
+import { BaseEntity } from 'src/common/entities/base.entity';
 
 @Entity({
   name: 'labels_questions_relationship',
