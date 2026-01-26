@@ -13,9 +13,9 @@ import { TypeQuestionsService } from './services/type-questions.service';
 import { TypeQuestionsController } from './controllers/type-questions.controller';
 import { FunFacts } from './entities/fun-facts.entity';
 import { LabelsQuestionsRelationship } from './entities/labels-questions-relationship.entity';
-import { Score } from './entities/score.entity';
-import { ScoreQuestions } from './entities/score-questions.entity';
 import { UsersModule } from 'src/users/users.module';
+import { FunfactsController } from './controllers/funfacts.controller';
+import { FunfactsService } from './services/funfacts.service';
 
 @Module({
   imports: [
@@ -26,14 +26,22 @@ import { UsersModule } from 'src/users/users.module';
       Label,
       FunFacts,
       LabelsQuestionsRelationship,
-      Score,
-      ScoreQuestions,
     ]),
     LocationModule,
     UsersModule,
   ],
-  controllers: [QuestionsController, LabelsController, TypeQuestionsController],
-  providers: [QuestionsService, LabelsService, TypeQuestionsService],
-  exports: [TypeQuestionsService],
+  controllers: [
+    QuestionsController,
+    LabelsController,
+    TypeQuestionsController,
+    FunfactsController,
+  ],
+  providers: [
+    QuestionsService,
+    LabelsService,
+    TypeQuestionsService,
+    FunfactsService,
+  ],
+  exports: [TypeQuestionsService, TypeOrmModule],
 })
 export class QuestionsModule {}

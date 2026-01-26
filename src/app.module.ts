@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { QuestionsModule } from './questions/questions.module';
 import { ErrorsModule } from './errors/errors.module';
+import { PlayModule } from './play/play.module';
+import { WebsocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { ErrorsModule } from './errors/errors.module';
     UsersModule,
     QuestionsModule,
     ErrorsModule,
+    PlayModule,
+    WebsocketModule,
   ],
 })
 export class AppModule {}

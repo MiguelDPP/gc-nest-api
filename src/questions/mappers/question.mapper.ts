@@ -6,7 +6,10 @@ import { TypeQuestionMapper } from './type-question.mapper';
 import { AnswerMapper } from './answer.mapper';
 
 export class QuestionMapper {
-  static toResponse(question: Question): QuestionResponseDto {
+  static toResponse(
+    question: Question,
+    isPrivate: boolean = false,
+  ): QuestionResponseDto {
     const questionDto = plainToInstance(QuestionResponseDto, question, {
       excludeExtraneousValues: true,
     });
@@ -31,7 +34,13 @@ export class QuestionMapper {
       question.typeQuestion,
     );
 
-    questionDto.answers = AnswerMapper.toResponseList(question.answers);
+    if (isPrivate) {
+      questionDto.answers = AnswerMapper.toPrivateResponseList(
+        question.answers,
+      );
+    } else {
+      questionDto.answers = AnswerMapper.toResponseList(question.answers);
+    }
 
     // if ()
 

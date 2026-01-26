@@ -3,6 +3,7 @@ import { UserResponseDto } from 'src/users/dto/user-response.dto';
 import { TypeQuestionResponseDto } from '../type-questions/type-question-response.dto';
 import { AnswerResponseDto } from '../answers/asnwer-response.dto';
 import { LabelResponseDto } from '../labels/label-response.dto';
+import { AnswerPrivateResponseDto } from '../answers/asnwer-private-response.dto';
 
 export class QuestionResponseDto {
   @Expose()
@@ -12,14 +13,14 @@ export class QuestionResponseDto {
   @Expose()
   question: string;
   @Expose()
-  user: UserResponseDto;
+  user?: UserResponseDto;
   @Expose()
   typeQuestion: TypeQuestionResponseDto;
   @Expose()
   time: number;
 
   @Expose()
-  answers: AnswerResponseDto[];
+  answers: AnswerResponseDto[] | AnswerPrivateResponseDto[];
 
   @Expose()
   isValidated: boolean;
@@ -32,5 +33,5 @@ export class QuestionResponseDto {
   };
 
   @Expose()
-  labels: LabelResponseDto[];
+  labels?: LabelResponseDto[];
 }

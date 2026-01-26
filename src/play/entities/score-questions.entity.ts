@@ -1,7 +1,7 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Score } from './score.entity';
-import { Question } from './question.entity';
+import { Question } from 'src/questions/entities/question.entity';
 
 @Entity({
   name: 'score_questions',

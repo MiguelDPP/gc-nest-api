@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { UsersRolesRelationship } from './users-roles-relationship.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
-import { Score } from 'src/questions/entities/score.entity';
+import { Score } from 'src/play/entities/score.entity';
 
 @Entity({
   name: 'users',
